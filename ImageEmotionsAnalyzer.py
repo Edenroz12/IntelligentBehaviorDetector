@@ -1,8 +1,6 @@
 import cv2
-from PIL import Image
 from fer import FER
 from matplotlib import pyplot as plt
-import numpy as np
 
 
 def start_analyzing(test_image_one):
@@ -19,30 +17,32 @@ def start_analyzing(test_image_one):
     emoji_and_text(test_image_one, dominant_emotion)
 
 
-def emoji_and_text(test_image_one, dominant_emotion):
-    emotions_dict = {'happy': 'happy', 'sad': 'sad', 'surprise': 'surprised', 'neutral': 'neutral', 'fear': 'fear',
-                     'disgust': 'disgust',
-                     'angry': 'angry'}
-    cv2.putText(img=test_image_one,
-                text='You are ' + emotions_dict.get(dominant_emotion, ' undefined'),
+def emoji_and_text(face_image, dominant_emotion):
+    cv2.putText(img=face_image,
+                text=f'You are {dominant_emotion}',
                 org=(90, 90),
                 fontFace=cv2.FONT_HERSHEY_TRIPLEX,
                 fontScale=1.7,
                 color=(8, 8, 8),
                 thickness=3)
-    rgb_img = cv2.cvtColor(test_image_one, cv2.COLOR_BGR2RGB)
 
     # draw emoji
-    im1_nparray = rgb_img
-    im2 = Image.open("emojis_images/" + dominant_emotion + ".png")
-    mask_im = Image.open('circle_white2.jpg').resize(im2.size).convert('L')
+    emoji_img = cv2.imread("emojis_images/" + dominant_emotion + ".png")
 
-    im1 = Image.fromarray(im1_nparray)
-    im1.paste(im2, (550, 55), mask_im)
-    rgb_img = np.array(im1)
+    image = face_image.copy()
 
-    cv2.imshow('My Image', rgb_img)
+    x_offset, y_offset = 570, 50
 
-    seconds = 10
+    y1, y2 = y_offset, y_offset + emoji_img.shape[0]
+    x1, x2 = x_offset, x_offset + emoji_img.shape[1]
 
+    alpha_s = emoji_img[:, :, 2] / 255.0
+    alpha_l = 1.0 - alpha_s
+
+    for c in range(0, 3):
+        image[y1:y2, x1:x2, c] = (alpha_s * emoji_img[:, :, c] +
+                                  alpha_l * image[y1:y2, x1:x2, c])
+
+    seconds = 3
+    cv2.imshow('My Image', image)
     cv2.waitKey(seconds * 1000)
