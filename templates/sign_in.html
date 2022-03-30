@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='main.css') }}">
+</head>
+<body>
+<form action="/" method="post">
+    <input type="text" name="email" id ="email">
+    <br>
+    <input type="submit" value="sign in">
+</form>
+<input type="button" onclick="location.href='sign_up';" value="sign up" />
+</body>
+</html>
