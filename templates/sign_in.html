@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css') }}">
 </head>
 <body>
 <form action="/" method="post">
-    <input type="email" name="email" id ="email">
+    <input type="email" name="email" id="email" placeholder="email">
     <br>
     <input type="submit" value="sign in">
 </form>
-<input type="button" onclick="location.href='sign_up';" value="sign up" />
+<input type="button" onclick="location.href='sign_up';" value="sign up"/>
 </body>
 </html>

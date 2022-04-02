@@ -11,7 +11,8 @@ class ImageAnalyzer:
         emo_detector = FER(mtcnn=True)
         # Use the top Emotion() function to call for the dominant emotion in the image
         dominant_emotion, emotion_score = emo_detector.top_emotion(self.__image)
-        print(dominant_emotion, emotion_score)
+        if None in [dominant_emotion, emotion_score]:
+            raise ValueError('Undefined Emotion')
         if dominant_emotion.lower() == 'angry':
             return Angry('./emojis_images/' + dominant_emotion + '.png')
         elif dominant_emotion.lower() == 'disgust':
@@ -55,6 +56,4 @@ class ImageAnalyzer:
             image[y1:y2, x1:x2, c] = (alpha_s * emoji_img[:, :, c] +
                                       alpha_l * image[y1:y2, x1:x2, c])
 
-        seconds = 3
-        cv2.imshow('My Image', image)
-        cv2.waitKey(seconds * 1000)
+        return image

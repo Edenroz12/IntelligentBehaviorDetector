@@ -3,8 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css') }}">
+    <script src="{{ url_for('static',filename='js/camera.js') }}"></script>
 </head>
-<body>
-Do Things
+<body style="background-color: {{ preferred_color if preferred_color is defined else request.cookies.get('preferred_color') }}">
+<h1>
+    Welcome {{ name if name is defined else request.cookies.get('name') }}
+</h1>
+<div id="logout_div">
+    <form action="/logout" method="get">
+        <input type="submit" value="logout">
+    </form>
+</div>
+
+<div id="upload_picture">
+    <form action="/upload_img" method="post" enctype="multipart/form-data">
+        <input type="file" name="myfile" accept=".jpg, .jpeg, .png">
+        <input type="submit" value="Submit Upload Picture">
+    </form>
+</div>
+<br>
+<div class="camera_picture" style="visibility: hidden">
+    <div class="camera">
+        <video id="video">Video stream not available.</video>
+        <button id="startbutton">Take photo</button>
+    </div>
+    <canvas id="canvas">
+    </canvas>
+    <div class="output">
+        <img id="photo" alt="The screen capture will appear in this box.">
+    </div>
+    <form action="/camera_img" method="post" onclick="send_img_url();" enctype="multipart/form-data">
+        <input type="hidden" name="base64" id="input-id"/>
+        <input type="submit" value="Submit Camera Picture">
+    </form>
+</div>
+
+<br>
+
+<input type="button" id="open_camera_button" value='open camera' onclick="start_camera();">
+
+<br>
+
+<div id="view_graph">
+    <form action="/view_graph" method="get">
+        <input type="submit" value="View your graph">
+    </form>
+</div>
+
 </body>
 </html>

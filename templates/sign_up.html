@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css') }}">
 </head>
 <body>
-
+<form action="/sign_up" method="post">
+    <input type="text" name="name" id="name" placeholder="name">
+    <br>
+    <input type="email" name="email" id="email" placeholder="email">
+    <br>
+    <input type="color" name="preferred_color" id="preferred_color">
+    <br>
+    <input type="submit" value="sign up">
+</form>
 </body>
 </html>

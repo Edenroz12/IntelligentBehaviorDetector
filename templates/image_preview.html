@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <title>{{ emotion.get_name() }}</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css') }}">
+</head>
+<body style="background-color: {{ preferred_color if preferred_color is defined else request.cookies.get('preferred_color') }}">
+<img src="{{ img_src }}">
+<br>
+<a href="{{ url_for('homepage') }}">
+    <img id="home_icon" src="{{ url_for('static',filename='images/home_icon.png') }}"/>
+</a>
+</body>
+</html>

@@ -2,9 +2,7 @@ from pymongo import MongoClient
 from datetime import datetime
 import pickle
 
-import MyEmoji
-
-db_password = 'eden1580278'
+db_password = ''  # Enter DB Password HERE
 cluster = MongoClient(f'mongodb+srv://admin:{db_password}@cluster0.bcv6e.mongodb.net',
                       serverSelectionTimeoutMS=15 * 1000)  # Timeout for each finding / updating
 
@@ -12,8 +10,7 @@ db = cluster['users']
 collection = db['users']
 
 
-def sign_up(name, email):
-    name = name.lower()
+def sign_up(name, email, preferred_color):
     email = email.lower()
     # if user exists, return
     try:
@@ -21,20 +18,28 @@ def sign_up(name, email):
         if user is None:
             collection.insert_one({'name': name,
                                    'email': email,
+                                   'preferred_color': preferred_color,
                                    'daily_emotions': []})
+            return True
         else:
-            return
+            return False
     except:
         pass
+
+
+def exists(name, email, preferred_color):
+    user = collection.find_one({'name': name, 'email': email, 'preferred_color': preferred_color})
+    return user is not None
 
 
 def sign_in(email):
     email = email.lower()
     try:
         user = collection.find_one({'email': email})
-        if user is None:
-            return False
-        return True
+        if user:
+            return {'name': user['name'],
+                    'email': user['email'],
+                    'preferred_color': user['preferred_color']}
     except:
         pass
 
